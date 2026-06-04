@@ -1,0 +1,59 @@
+{
+  "name": "wanding",
+  "version": "1.0.0",
+  "description": "Wanding quotation MCP suite: bundled wanding-quotation-mcp + 3 slash commands + 2 business knowledge skills + 1 quotation assistant agent + 2 security hooks.",
+  "author": { "name": "YJC Tools Team" },
+  "license": "UNLICENSED",
+  "commands": "./commands",
+  "agents": "./agents",
+  "skills": "./skills",
+  "hooks": "./hooks/hooks.json",
+  "mcpServers": {
+    "quotation": {
+      "type": "stdio",
+      "command": "bun",
+      "args": ["${CLAUDE_PLUGIN_ROOT}/quotation-mcp/dist/index.js"],
+      "env": {
+        "CCB_PROJECT_ROOT": "${CLAUDE_PLUGIN_ROOT}/quotation-mcp",
+        "PYTHONIOENCODING": "utf-8",
+        "PYTHONUTF8": "1",
+        "DATA_DIR": "${CLAUDE_PLUGIN_ROOT}/quotation-mcp/data",
+        "PYTHON_EXECUTABLE": "${user_config.python_executable}"
+      }
+    }
+  },
+  "userConfig": {
+    "python_executable": {
+      "type": "string",
+      "title": "Python executable path",
+      "description": "Absolute path to your python interpreter. Leave blank to auto-pick (win32=python, others=python3).",
+      "required": false,
+      "default": ""
+    },
+    "aol_token": {
+      "type": "string",
+      "title": "Accurate AOL Access Token (for inventory queries)",
+      "sensitive": true,
+      "required": false
+    },
+    "aol_database_id": {
+      "type": "string",
+      "title": "Accurate database ID",
+      "default": "iris",
+      "required": false
+    },
+    "aol_signature_secret": {
+      "type": "string",
+      "title": "Accurate signature secret",
+      "sensitive": true,
+      "required": false
+    },
+    "approved_paths": {
+      "type": "string",
+      "title": "Whitelisted directories (semicolon-separated)",
+      "description": "Paths where fill_quotation_sheet / parse_excel_smart can read/write. Default: ~/Documents/wanding/",
+      "default": "~/Documents/wanding/",
+      "required": false
+    }
+  }
+}
