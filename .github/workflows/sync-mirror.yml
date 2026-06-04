@@ -1,0 +1,47 @@
+name: Sync to wanding-quotation-mcp mirror
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "quotation-mcp/**"
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    if: github.event_name == 'push'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Configure git
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: Checkout mirror branch
+        run: |
+          git checkout -B mirror-from-plugin || git checkout mirror-from-plugin
+
+      - name: Replace contents with quotation-mcp/ subtree
+        run: |
+          # Delete everything except .git and .github/workflows
+          find . -mindepth 1 -maxdepth 1 \
+            ! -name '.git' \
+            ! -name '.github' \
+            -exec rm -rf {} +
+          # Copy quotation-mcp/* into root
+          cp -r ../quotation-mcp/. .
+          # Cleanup
+          rm -rf .github
+
+      - name: Commit and push mirror branch
+        run: |
+          git add -A
+          if git diff --staged --quiet; then
+            echo "No changes to mirror"
+            exit 0
+          fi
+          git commit -m "mirror: sync from wanding-plugin $(date -u +%Y-%m-%dT%H:%M:%SZ)"
+          git push origin mirror-from-plugin --force
