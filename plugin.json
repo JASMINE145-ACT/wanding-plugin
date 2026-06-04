@@ -4,9 +4,9 @@
   "description": "Wanding quotation MCP suite: bundled wanding-quotation-mcp + 3 slash commands + 2 business knowledge skills + 1 quotation assistant agent + 2 security hooks.",
   "author": { "name": "YJC Tools Team" },
   "license": "UNLICENSED",
-  "commands": "./commands",
-  "agents": "./agents",
-  "skills": "./skills",
+  "commands": ["./commands/"],
+  "agents": ["./agents/quotation-assistant.md"],
+  "skills": ["./skills/"],
   "hooks": "./hooks/hooks.json",
   "mcpServers": {
     "quotation": {
@@ -33,18 +33,21 @@
     "aol_token": {
       "type": "string",
       "title": "Accurate AOL Access Token (for inventory queries)",
+      "description": "Accurate Online API access token used for live inventory queries against the AOL backend. Stored in your system keychain (sensitive).",
       "sensitive": true,
       "required": false
     },
     "aol_database_id": {
       "type": "string",
       "title": "Accurate database ID",
+      "description": "Accurate database identifier (default: iris).",
       "default": "iris",
       "required": false
     },
     "aol_signature_secret": {
       "type": "string",
       "title": "Accurate signature secret",
+      "description": "HMAC signing secret for the Accurate API. Stored in your system keychain (sensitive).",
       "sensitive": true,
       "required": false
     },
