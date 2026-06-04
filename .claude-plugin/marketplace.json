@@ -8,7 +8,7 @@
       "name": "wanding",
       "source": "./",
       "description": "Wanding quotation MCP suite: bundled wanding-quotation-mcp + 3 slash commands + 2 business knowledge skills + 1 quotation assistant agent + 2 security hooks.",
-      "version": "1.0.2"
+      "version": "1.0.4"
     }
   ]
 }

@@ -1,6 +1,6 @@
 {
   "name": "wanding",
-  "version": "1.0.0",
+  "version": "1.0.4",
   "description": "Wanding quotation MCP suite: bundled wanding-quotation-mcp + 3 slash commands + 2 business knowledge skills + 1 quotation assistant agent + 2 security hooks.",
   "author": { "name": "YJC Tools Team" },
   "license": "UNLICENSED",
