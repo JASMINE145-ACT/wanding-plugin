@@ -1,0 +1,9 @@
+{
+  "mcpServers": {
+    "wanding": {
+      "type": "plugin",
+      "name": "wanding",
+      "version": ">=1.0.0"
+    }
+  }
+}
