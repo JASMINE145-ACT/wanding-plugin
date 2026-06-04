@@ -1,0 +1,31 @@
+# Node / Bun
+node_modules/
+dist-tmp/
+*.log
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+.pytest_cache/
+.venv/
+venv/
+
+# Env / secrets
+.env
+.env.*
+!.env.example
+!.env.*.example
+
+# Editor
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# Temp
+*.tmp
+*.bak
+
+# Audit log (not committed, but allow local)
+.wanding/

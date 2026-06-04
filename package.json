@@ -1,0 +1,17 @@
+{
+  "name": "wanding-plugin",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Wanding quotation MCP suite (plugin shell + bundled wanding-quotation-mcp)",
+  "scripts": {
+    "test": "bun test",
+    "typecheck": "echo 'no TS source to typecheck at root'",
+    "smoke:quote": "bash tests/smoke-quote.sh",
+    "smoke:inventory": "bash tests/smoke-inventory.sh",
+    "smoke:fill-sheet": "bash tests/smoke-fill-sheet.sh"
+  },
+  "devDependencies": {
+    "@types/bun": "latest"
+  }
+}
