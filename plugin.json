@@ -7,7 +7,32 @@
   "commands": ["./commands/"],
   "agents": ["./agents/quotation-assistant.md"],
   "skills": ["./skills/"],
-  "hooks": "./hooks/hooks.json",
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "mcp__quotation__fill_quotation_sheet|mcp__quotation__parse_excel_smart",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node ${CLAUDE_PLUGIN_ROOT}/hooks/scripts/pretool-quotation-guard.js",
+            "timeout": 5
+          }
+        ]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "matcher": "mcp__quotation__.*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node ${CLAUDE_PLUGIN_ROOT}/hooks/scripts/posttool-audit.js",
+            "timeout": 3
+          }
+        ]
+      }
+    ]
+  },
   "mcpServers": {
     "quotation": {
       "type": "stdio",
