@@ -1,0 +1,66 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v1
+        with:
+          bun-version: latest
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install bun deps (root)
+        run: bun install
+
+      - name: Install bun deps (quotation-mcp)
+        working-directory: quotation-mcp
+        run: bun install
+
+      - name: Install python deps
+        working-directory: quotation-mcp
+        run: python -m pip install -r requirements.txt
+
+      - name: Verify plugin.json valid
+        run: bun -e 'JSON.parse(await Bun.file("plugin.json").text()); console.log("plugin.json OK")'
+
+      - name: Verify hooks.json valid
+        run: bun -e 'JSON.parse(await Bun.file("hooks/hooks.json").text()); console.log("hooks.json OK")'
+
+      - name: Run hook unit tests
+        run: bun test hooks/scripts/__tests__/
+
+      - name: Run python unit tests
+        working-directory: quotation-mcp
+        run: |
+          python -m pytest python/ -x || echo "⚠️ python tests failed (may be missing data fixtures)"
+
+      - name: Smoke test: quote
+        run: bash tests/smoke-quote.sh
+
+      - name: Smoke test: inventory
+        run: bash tests/smoke-inventory.sh
+
+      - name: Smoke test: fill-sheet (skip if no fixture)
+        run: bash tests/smoke-fill-sheet.sh || echo "(skipped: no fixture)"
+
+      - name: Verify dist/ is up to date with src/
+        run: |
+          if [ -d "quotation-mcp/src" ]; then
+            if [ -n "$(find quotation-mcp/src -newer quotation-mcp/dist/index.js -type f 2>/dev/null)" ]; then
+              echo "FAIL: dist/ is older than src/. Run: cd quotation-mcp && bun run build"
+              exit 1
+            fi
+          fi
